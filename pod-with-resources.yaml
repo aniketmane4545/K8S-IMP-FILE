@@ -1,0 +1,26 @@
+Resource Limits
+What you'll learn: Control CPU and memory usage
+-----------------------------------------------------------------------
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: resource-demo
+   spec:
+     containers:
+     - name: nginx
+       image: nginx:1.21
+       resources:
+         requests:
+           memory: "64Mi"
+           cpu: "250m"
+         limits:
+           memory: "128Mi"
+           cpu: "500m"
+--------------------------------------------------------------------------
+1.Create Pod
+kubectl apply -f pod-with-resources.yaml
+2.Check resource usage
+ kubectl top pod resource-demo
+(If this doesn't work, enable metrics: minikube addons enable metrics-server and wait 1 minute)
+3.Describe pod to see resources
+kubectl describe pod resource-demo | grep -A 5 "Limits"
