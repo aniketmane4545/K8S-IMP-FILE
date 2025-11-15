@@ -1,0 +1,36 @@
+##Pod Lifecycle - Init Containers
+What you'll learn: Run setup tasks before main container
+-------------------------------------------------------------------------------------
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-demo
+spec:
+  initContainers:
+    - name: init-step1
+      image: busybox
+      command: ['sh', '-c', 'echo "Step 1: Checking dependencies" && sleep 5']
+
+    - name: init-step2
+      image: busybox
+      command: ['sh', '-c', 'echo "Step 2: Setting up config" && sleep 5']
+
+  containers:
+    - name: main-app
+      image: nginx:1.21
+      ports:
+        - containerPort: 80
+-----------------------------------------------------------------------------------------------
+1.Create Pod 
+kubectl apply -f pod-with-init.yaml
+2.Watch pod status (in real-time)
+kubectl get pods -w
+You'll see:
+
+Init:0/2 (first init container running)
+Init:1/2 (second init container running)
+PodInitializing
+Running
+3.Check init container logs
+kubectl logs init-demo -c init-step1
+kubectl logs init-demo -c init-step2
