@@ -1,0 +1,26 @@
+   apiVersion: v1
+   kind: Pod
+   metadata:
+     name: two-containers
+   spec:
+     containers:
+     - name: nginx
+       image: nginx:1.21
+       ports:
+       - containerPort: 80
+     - name: sidecar
+       image: busybox
+       command: ['sh', '-c', 'while true; do echo "Sidecar running"; sleep 5; done']
+
+----------------------------------------------------
+1.Create Pod
+kubectl apply -f multi-container-pod.yaml
+2.Check pod (should show 2/2 containers)
+kubectl get pods
+3.Get logs from specific container
+kubectl logs two-containers -c nginx
+kubectl logs two-containers -c sidecar
+4.Execute in specific container
+kubectl exec two-containers -c sidecar -- ls
+5.Test container communication (they share localhost)
+kubectl exec two-containers -c sidecar -- wget -O- http://localhost:80
