@@ -36,3 +36,26 @@
      containers:
      - name: redis
        image: redis:alpine
+---------------------------------------------------------------------------------------
+###COMMANDS TO RUN
+1.Create all pods
+kubectl apply -f labeled-pods.yaml
+2.Get all pods
+kubectl get pods
+3.Filter by label
+# Get only frontend tier
+   kubectl get pods -l tier=frontend
+   
+   # Get only production pods
+   kubectl get pods -l environment=production
+   
+   # Get frontend AND production
+   kubectl get pods -l tier=frontend,environment=production
+   
+   # Show labels
+   kubectl get pods --show-labels
+4.Add label to existing pod
+kubectl label pod cache-pod version=v1
+kubectl get pods --show-labels
+5.Update label
+kubectl label pod cache-pod version=v2 --overwrite 
